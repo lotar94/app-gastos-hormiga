@@ -1,24 +1,22 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import DiarySpend from './components/DiarySpend'
 
 export default function App() {
   return (
     <View style={styles.container}>
-      
-       <LinearGradient
-      //  99D5C2
-      //  77AAA5
-      //  417E7E
-          colors={['#99D5C2', '#357676', 'transparent']}
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 0,
-            height: 900,
-          }}
-        />
+
+      <LinearGradient
+      colors={['#99D5C2', '#357676', 'transparent']}
+      style={styles.gradient}
+      >
+        <DiarySpend amount={"2.870"}></DiarySpend>
+
+        
+      </LinearGradient>
+
+        
     </View>
   );
 }
@@ -30,4 +28,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  texto: {
+    fontSize: 50
+  },
+  gradient: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: 900,
+  }
 });
