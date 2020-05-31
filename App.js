@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Button, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import DiarySpend from './components/DiarySpend'
+import DiarySpend from './components/DiarySpend';
+import WeeklyExpenses from './components/WeeklyExpenses';
 
 export default function App() {
   return (
@@ -13,10 +14,12 @@ export default function App() {
       >
         <DiarySpend amount={"2.870"}></DiarySpend>
 
+        <WeeklyExpenses style={styles.weekly_expenses}></WeeklyExpenses>
+
+    
         
       </LinearGradient>
 
-        
     </View>
   );
 }
@@ -37,5 +40,10 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     height: 900,
+  },
+  weekly_expenses: {
+    backgroundColor: 'red',
+    marginBottom: 300,
+    paddingVertical: 300
   }
 });

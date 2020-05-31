@@ -24,7 +24,7 @@ export default class DiarySpend extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 0,
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    height: 200,
+    height: 160,
     backgroundColor: '#5BB78D',
     borderBottomLeftRadius: 175,
     borderBottomRightRadius: 175
