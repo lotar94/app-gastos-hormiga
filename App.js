@@ -1,10 +1,13 @@
 import React from 'react';
-import { StyleSheet, Button, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { LinearGradient } from 'expo-linear-gradient';
 import DiarySpend from './components/DiarySpend';
 import WeeklyExpenses from './components/WeeklyExpenses';
+import Keyboard from './components/Keyboard';
 
 export default function App() {
+ 
   return (
     <View style={styles.container}>
 
@@ -16,12 +19,23 @@ export default function App() {
 
         <WeeklyExpenses style={styles.weekly_expenses}></WeeklyExpenses>
 
-    
+      
+      <Keyboard></Keyboard>
+      {/* <View>
+        <Icon
+          style={styles.icon_add_expense}
+          name='plus'
+          onPress={()=> showKeyBoard()}
+        />
+      </View> */}
+
         
       </LinearGradient>
-
     </View>
   );
+}
+function showKeyBoard () {
+  console.log('llega');
 }
 
 const styles = StyleSheet.create({
@@ -45,5 +59,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     marginBottom: 300,
     paddingVertical: 300
+  },
+  icon_add_expense: {
+    marginTop: 200,
+    marginHorizontal: 145,
+    fontSize:80,
+    color:'#FF7E67'
   }
 });
