@@ -5,7 +5,10 @@ export default class Keyboard extends Component {
     onPress = () => {
         console.log('1');
     };
+    
+    
     render() {
+        
         
         return (
         <View>
@@ -52,7 +55,10 @@ export default class Keyboard extends Component {
                     <Text style={styles.btn_action_save} >Guardar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Text style={styles.btn_action_cancel} >Cancelar</Text>
+                    <Text style={styles.btn_action_cancel}
+                    onPress={()=> {
+                        this.props.callback();
+                    }} >Cancelar</Text>
                 </TouchableOpacity>
             </View>
         </View>

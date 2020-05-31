@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -7,7 +7,31 @@ import WeeklyExpenses from './components/WeeklyExpenses';
 import Keyboard from './components/Keyboard';
 
 export default function App() {
- 
+  const [keyboardVisibility, setKeyboardVisibility] = useState(false)
+  let aux = null;
+  
+  if (keyboardVisibility) {
+    aux =  <Keyboard
+    callback={() => {
+      console.log("Esta en el padre")
+      setKeyboardVisibility(false)
+    }}
+    ></Keyboard>;
+  }else {
+    aux = <View><Icon
+      style={styles.icon_add_expense}
+      name='plus'
+      onPress={()=> setKeyboardVisibility(true)}
+    />
+
+  </View>
+  }
+
+  function hideBtnPlus() {
+    console.log('ahora si que si ');
+    
+    keyboardVisibility = true
+  }
   return (
     <View style={styles.container}>
 
@@ -19,15 +43,9 @@ export default function App() {
 
         <WeeklyExpenses style={styles.weekly_expenses}></WeeklyExpenses>
 
-      
-      <Keyboard></Keyboard>
-      {/* <View>
-        <Icon
-          style={styles.icon_add_expense}
-          name='plus'
-          onPress={()=> showKeyBoard()}
-        />
-      </View> */}
+      {aux}
+      {/* <Keyboard></Keyboard> */}
+  
 
         
       </LinearGradient>
