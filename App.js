@@ -8,12 +8,17 @@ import Keyboard from './components/Keyboard';
 
 export default function App() {
   const [keyboardVisibility, setKeyboardVisibility] = useState(false)
+  const [dayAmount, setDayAmount] = useState('0')
   let aux = null;
   
   if (keyboardVisibility) {
     aux =  <Keyboard
-    callback={() => {
-      console.log("Esta en el padre")
+    onSubmit={(amount) => {
+      console.log('Esta en el padre', amount)
+      setDayAmount(Number(amount)+Number(dayAmount))
+      
+    }}
+    cancel={() => {
       setKeyboardVisibility(false)
     }}
     ></Keyboard>;
@@ -26,12 +31,6 @@ export default function App() {
 
   </View>
   }
-
-  function hideBtnPlus() {
-    console.log('ahora si que si ');
-    
-    keyboardVisibility = true
-  }
   return (
     <View style={styles.container}>
 
@@ -39,15 +38,12 @@ export default function App() {
       colors={['#99D5C2', '#357676', 'transparent']}
       style={styles.gradient}
       >
-        <DiarySpend amount={"2.870"}></DiarySpend>
+        <DiarySpend amount={dayAmount}></DiarySpend>
 
         <WeeklyExpenses style={styles.weekly_expenses}></WeeklyExpenses>
 
-      {aux}
-      {/* <Keyboard></Keyboard> */}
-  
+        {aux}
 
-        
       </LinearGradient>
     </View>
   );

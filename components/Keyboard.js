@@ -1,63 +1,83 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { View, Button, TouchableOpacity, Text, StyleSheet } from 'react-native'
 
 export default class Keyboard extends Component {
-    onPress = () => {
-        console.log('1');
-    };
-    
-    
+    state = {amount: ''}
     render() {
         
         
+        let {amount} = this.state
+        
+        const addNumber = (number) => {
+            this.setState({amount: this.state.amount + number})
+            amount = `${amount}${number}`;
+        };
+        const setKeyboardVisibility = () => {
+            this.setState({amount: amount.slice(0, -1)})
+        }
+
         return (
         <View>
+            <View style= {styles.container_amount}>
+                <Text style={styles.text_btn_amount}  >{amount}</Text>
+                <Icon
+                style={styles.icon_add_expense}
+                name='backspace'
+                onPress={()=> {setKeyboardVisibility()}}
+                />
+            </View>
             <View style= {styles.container}>
-                <TouchableOpacity style={styles.btn_keyboard} KeyboardType="numeric" onPress={this.onPress}>
+                <TouchableOpacity style={styles.btn_keyboard} KeyboardType="numeric" onPress={() => {addNumber('1')}}>
                     <Text style={styles.text_btn}  >1</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btn_keyboard} onPress={this.onPress}>
+                <TouchableOpacity style={styles.btn_keyboard} onPress={() => {addNumber('2')}}>
                     <Text style={styles.text_btn} >2</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btn_keyboard} onPress={this.onPress}>
+                <TouchableOpacity style={styles.btn_keyboard} onPress={() => {addNumber('3')}}>
                     <Text style={styles.text_btn} >3</Text>
                 </TouchableOpacity>
             </View>
             <View style= {styles.container}>
-                <TouchableOpacity style={styles.btn_keyboard} KeyboardType="numeric" onPress={this.onPress}>
+                <TouchableOpacity style={styles.btn_keyboard} KeyboardType="numeric" onPress={() => {addNumber('4')}}>
                     <Text style={styles.text_btn}  >4</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btn_keyboard} onPress={this.onPress}>
+                <TouchableOpacity style={styles.btn_keyboard} onPress={() => {addNumber('5')}}>
                     <Text style={styles.text_btn} >5</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btn_keyboard} onPress={this.onPress}>
+                <TouchableOpacity style={styles.btn_keyboard} onPress={() => {addNumber('6')}}>
                     <Text style={styles.text_btn} >6</Text>
                 </TouchableOpacity>
             </View>
             <View style= {styles.container}>
-                <TouchableOpacity style={styles.btn_keyboard} KeyboardType="numeric" onPress={this.onPress}>
+                <TouchableOpacity style={styles.btn_keyboard} KeyboardType="numeric" onPress={() => {addNumber('7')}}>
                     <Text style={styles.text_btn}  >7</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btn_keyboard} onPress={this.onPress}>
+                <TouchableOpacity style={styles.btn_keyboard} onPress={() => {addNumber('8')}}>
                     <Text style={styles.text_btn} >8</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btn_keyboard} onPress={this.onPress}>
+                <TouchableOpacity style={styles.btn_keyboard} onPress={() => {addNumber('9')}}>
                     <Text style={styles.text_btn} >9</Text>
                 </TouchableOpacity>
             </View>
             <View style= {styles.container}>
-                <TouchableOpacity style={styles.btn_keyboard} onPress={this.onPress}>
+                <TouchableOpacity style={styles.btn_keyboard} onPress={() => {addNumber('0')}}>
                     <Text style={styles.text_btn} >0</Text>
                 </TouchableOpacity>
             </View>
             <View style= {styles.btn_action_section}>
                 <TouchableOpacity>
-                    <Text style={styles.btn_action_save} >Guardar</Text>
+                    <Text style={styles.btn_action_save} 
+                    onPress={() => {
+                        this.props.onSubmit(amount)
+                        this.props.cancel();
+                    }}
+                    >Guardar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity>
                     <Text style={styles.btn_action_cancel}
                     onPress={()=> {
-                        this.props.callback();
+                        this.props.cancel();
                     }} >Cancelar</Text>
                 </TouchableOpacity>
             </View>
@@ -124,5 +144,26 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold",
         fontFamily: 'Roboto'
-    }
+    },
+    container_amount: {
+        flex:0,
+        flexDirection:'row',
+        justifyContent:'flex-end',
+        alignItems:'center',
+        width: '85%',
+        height:55,
+        
+    },
+    text_btn_amount: {
+        color:'#464646',
+        fontSize: 35,
+        fontWeight: "bold",
+        fontFamily: 'Roboto',
+        paddingRight: 15,
+        alignItems:'center',
+    }, 
+    icon_add_expense: {
+        fontSize:40,
+        color:'#464646'
+      }
 })

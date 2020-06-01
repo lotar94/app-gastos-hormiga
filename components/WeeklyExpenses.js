@@ -42,7 +42,7 @@ export default class WeeklyExpenses extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 75,
+        marginTop: 50,
         flex: 0,
     },
     boxSmall: {
