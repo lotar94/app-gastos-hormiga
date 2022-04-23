@@ -5,8 +5,14 @@ import { LinearGradient } from 'expo-linear-gradient';
 import DiarySpend from './components/DiarySpend';
 import WeeklyExpenses from './components/WeeklyExpenses';
 import Keyboard from './components/Keyboard';
+import AppLoading from 'expo-app-loading';
+import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 
 export default function App() {
+  let [fontsLoaded] = useFonts({
+    Inter_900Black,
+  });
+
   const [keyboardVisibility, setKeyboardVisibility] = useState(false)
   const [dayAmount, setDayAmount] = useState('0')
   let aux = null;
@@ -30,6 +36,10 @@ export default function App() {
     />
 
   </View>
+  }
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
   }
   return (
     <View style={styles.container}>

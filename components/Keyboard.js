@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
         color:'#464646',
         fontSize: 35,
         fontWeight: "bold",
-        fontFamily: 'Roboto'
+        fontFamily: 'Inter_900Black'
     },
     btn_action_section: {
         flex: 0,
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         fontSize: 16,
         fontWeight: "bold",
-        fontFamily: 'Roboto'
+        fontFamily: 'Inter_900Black'
     },
     btn_action_cancel: {
         backgroundColor: '#C4C4C4',
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
         color:'#464646',
         fontSize: 16,
         fontWeight: "bold",
-        fontFamily: 'Roboto'
+        fontFamily: 'Inter_900Black'
     },
     container_amount: {
         flex:0,
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
         color:'#464646',
         fontSize: 35,
         fontWeight: "bold",
-        fontFamily: 'Roboto',
+        fontFamily: 'Inter_900Black',
         paddingRight: 15,
         alignItems:'center',
     }, 
