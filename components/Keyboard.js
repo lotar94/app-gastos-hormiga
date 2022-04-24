@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         padding: 20,
-        height: 67 
+        height: 87
     },
     btn_action_save: {
         backgroundColor:'#C4C4C4',
@@ -131,7 +131,8 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         fontSize: 16,
         fontWeight: "bold",
-        fontFamily: 'Inter_900Black'
+        fontFamily: 'Inter_900Black',
+        borderRadius:5
     },
     btn_action_cancel: {
         backgroundColor: '#C4C4C4',
@@ -151,8 +152,7 @@ const styles = StyleSheet.create({
         justifyContent:'flex-end',
         alignItems:'center',
         width: '85%',
-        height:55,
-        
+        height:55        
     },
     text_btn_amount: {
         color:'#464646',
