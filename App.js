@@ -4,9 +4,14 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { LinearGradient } from 'expo-linear-gradient';
 import DiarySpend from './components/DiarySpend';
 import WeeklyExpenses from './components/WeeklyExpenses';
-// import Keyboard from './components/Keyboard';
+import Keyboard from './components/Keyboard';
 import AppLoading from 'expo-app-loading';
 import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
+import { NavigationContainer } from '@react-navigation/native';
+
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
 
@@ -15,7 +20,6 @@ export default function App() {
     Inter_900Black,
   });
 
-  // const [keyboardVisibility, setKeyboardVisibility] = useState(false)
   const [modalVisible, setModalVisible] = useState(false);
   const [dayAmount, setDayAmount] = useState('0')
 
@@ -23,104 +27,106 @@ export default function App() {
   const [number, onChangeNumber] = React.useState(null);
   let aux = null;
   
-  // if (keyboardVisibility) {
-  //   aux =  <Keyboard
-  //   onSubmit={(amount) => {
-  //     console.log('Esta en el padre', amount)
-  //     setDayAmount(Number(amount)+Number(dayAmount))
-  //   }}
-  //   cancel={() => {
-  //     setKeyboardVisibility(false)
-  //   }}
-  //   ></Keyboard>;
-  // }else {
-  //   aux = <View><Icon
-  //     style={styles.icon_add_expense}
-  //     name='plus'
-  //     onPress={()=> setKeyboardVisibility(true)}
-  //   />
 
-  // </View>
-  // }
 
   if (!fontsLoaded) {
     return <AppLoading />;
   }
   return (
-    <View style={styles.container}>
+    <NavigationContainer>
+      <Stack.Navigator>
+
+      <Stack.Screen name="Profile" component={ Keyboard } />
+
+        <Stack.Screen
+            name="Home"
+            component={
+
+              <DiarySpend amount={dayAmount}></DiarySpend>
+
+            // <View style={styles.container}>
 
 
-    <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Nuevo Gasto</Text>
+            // <Modal
+            //     animationType="slide"
+            //     transparent={true}
+            //     visible={modalVisible}
+            //     onRequestClose={() => {
+            //       Alert.alert("Modal has been closed.");
+            //       setModalVisible(!modalVisible);
+            //     }}
+            //   >
+            //     <View style={styles.centeredView}>
+            //       <View style={styles.modalView}>
+            //         <Text style={styles.modalText}>Nuevo Gasto</Text>
 
-            <SafeAreaView>
-              <TextInput
-                style={styles.input}
-                onChangeText={onChangeNumber}
-                value={number}
-                placeholder="Monto"
-                keyboardType="numeric"
-              />
-              <TextInput
-                style={styles.input}
-                onChangeText={onChangeText}
-                placeholder="Description"
-                value={text}
-              />
-            </SafeAreaView>
+            //         <SafeAreaView>
+            //           <TextInput
+            //             style={styles.input}
+            //             onChangeText={onChangeNumber}
+            //             value={number}
+            //             placeholder="Monto"
+            //             keyboardType="numeric"
+            //           />
+            //           <TextInput
+            //             style={styles.input}
+            //             onChangeText={onChangeText}
+            //             placeholder="Description"
+            //             value={text}
+            //           />
+            //         </SafeAreaView>
 
-            <View style= {styles.btn_action_section}>
-              <Pressable
-                style={[styles.button, styles.buttonClose_save]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>Guardar</Text>
-              </Pressable>
+            //         <View style= {styles.btn_action_section}>
+            //           <Pressable
+            //             style={[styles.button, styles.buttonClose_save]}
+            //             onPress={() => setModalVisible(!modalVisible)}
+            //           >
+            //             <Text style={styles.textStyle}>Guardar</Text>
+            //           </Pressable>
 
-              <Pressable
-                style={[styles.button, styles.buttonClose_cancel]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>Cancelar</Text>
-              </Pressable>
-                
-            </View>
+            //           <Pressable
+            //             style={[styles.button, styles.buttonClose_cancel]}
+            //             onPress={() => setModalVisible(!modalVisible)}
+            //           >
+            //             <Text style={styles.textStyle}>Cancelar</Text>
+            //           </Pressable>
+                        
+            //         </View>
 
 
-            
-          </View>
-        </View>
-      </Modal>
+                    
+            //       </View>
+            //     </View>
+            //   </Modal>
 
-      <LinearGradient
-      colors={['#99D5C2', '#357676', 'transparent']}
-      style={styles.gradient}
-      >
-        <DiarySpend amount={dayAmount}></DiarySpend>
+            //   <LinearGradient
+            //   colors={['#99D5C2', '#357676', 'transparent']}
+            //   style={styles.gradient}
+            //   >
+            //     <DiarySpend amount={dayAmount}></DiarySpend>
 
-        <WeeklyExpenses style={styles.weekly_expenses}></WeeklyExpenses>
+            //     <WeeklyExpenses style={styles.weekly_expenses}></WeeklyExpenses>
 
-        <View>
-          <Icon
-            style={styles.icon_add_expense}
-            name='plus'
-            onPress={()=> setModalVisible(true)}
-          />
-        </View>
-        {/* {aux} */}
+            //     <View>
+            //       <Icon
+            //         style={styles.icon_add_expense}
+            //         name='plus'
+            //         onPress={()=> setModalVisible(true)}
+            //       />
+            //     </View>
+            //     {/* {aux} */}
 
-      </LinearGradient>
-    </View>
+            //   </LinearGradient>
+            // </View>
+
+          }
+        options={{ title: 'Welcome' }}
+        />
+      
+        
+
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 function showKeyBoard () {
