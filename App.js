@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Modal, Text, Pressable, Alert, TextInput, SafeAreaView } from 'react-native';
+import { StyleSheet, View, Modal, Text, Button, Pressable, Alert, TextInput, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { LinearGradient } from 'expo-linear-gradient';
 import DiarySpend from './components/DiarySpend';
@@ -11,6 +11,105 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+function Home() {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [dayAmount, setDayAmount] = useState('0')
+
+  const [text, onChangeText] = React.useState(null);
+  const [number, onChangeNumber] = React.useState(null);
+  let aux = null;
+  return (
+    //<DiarySpend amount={dayAmount}></DiarySpend>
+    <View style={styles.container}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Nuevo Gasto</Text>
+
+              <SafeAreaView>
+                <TextInput
+                  style={styles.input}
+                  onChangeText={onChangeNumber}
+                  value={number}
+                  placeholder="Monto"
+                  keyboardType="numeric"
+                />
+                <TextInput
+                  style={styles.input}
+                  onChangeText={onChangeText}
+                  placeholder="Description"
+                  value={text}
+                />
+              </SafeAreaView>
+
+              <View style= {styles.btn_action_section}>
+                <Pressable
+                  style={[styles.button, styles.buttonClose_save]}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Text style={styles.textStyle}>Guardar</Text>
+                </Pressable>
+
+                <Pressable
+                  style={[styles.button, styles.buttonClose_cancel]}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Text style={styles.textStyle}>Cancelar</Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+      </Modal>
+
+              <LinearGradient
+              colors={['#99D5C2', '#357676', 'transparent']}
+              style={styles.gradient}
+              >
+                <DiarySpend amount={dayAmount}></DiarySpend>
+
+                <WeeklyExpenses style={styles.weekly_expenses}></WeeklyExpenses>
+
+                <View>
+                  <Icon
+                    style={styles.icon_add_expense}
+                    name='plus'
+                    onPress={()=> setModalVisible(true)}
+                  />
+                </View>
+                {/* {aux} */}
+
+              </LinearGradient>
+    </View>
+  );
+}
+
+function HomeScreen() {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home Screen</Text>
+    </View>
+  );
+}
+
+function DetailsScreen({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Details Screen</Text>
+      <Button
+        title="Go to Details"
+        onPress={() => navigation.navigate('Home')}
+      />
+    </View>
+  );
+}
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -19,13 +118,6 @@ export default function App() {
   let [fontsLoaded] = useFonts({
     Inter_900Black,
   });
-
-  const [modalVisible, setModalVisible] = useState(false);
-  const [dayAmount, setDayAmount] = useState('0')
-
-  const [text, onChangeText] = React.useState(null);
-  const [number, onChangeNumber] = React.useState(null);
-  let aux = null;
   
 
 
@@ -36,95 +128,10 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
 
-      <Stack.Screen name="Profile" component={ Keyboard } />
-
-        <Stack.Screen
-            name="Home"
-            component={
-
-              <DiarySpend amount={dayAmount}></DiarySpend>
-
-            // <View style={styles.container}>
-
-
-            // <Modal
-            //     animationType="slide"
-            //     transparent={true}
-            //     visible={modalVisible}
-            //     onRequestClose={() => {
-            //       Alert.alert("Modal has been closed.");
-            //       setModalVisible(!modalVisible);
-            //     }}
-            //   >
-            //     <View style={styles.centeredView}>
-            //       <View style={styles.modalView}>
-            //         <Text style={styles.modalText}>Nuevo Gasto</Text>
-
-            //         <SafeAreaView>
-            //           <TextInput
-            //             style={styles.input}
-            //             onChangeText={onChangeNumber}
-            //             value={number}
-            //             placeholder="Monto"
-            //             keyboardType="numeric"
-            //           />
-            //           <TextInput
-            //             style={styles.input}
-            //             onChangeText={onChangeText}
-            //             placeholder="Description"
-            //             value={text}
-            //           />
-            //         </SafeAreaView>
-
-            //         <View style= {styles.btn_action_section}>
-            //           <Pressable
-            //             style={[styles.button, styles.buttonClose_save]}
-            //             onPress={() => setModalVisible(!modalVisible)}
-            //           >
-            //             <Text style={styles.textStyle}>Guardar</Text>
-            //           </Pressable>
-
-            //           <Pressable
-            //             style={[styles.button, styles.buttonClose_cancel]}
-            //             onPress={() => setModalVisible(!modalVisible)}
-            //           >
-            //             <Text style={styles.textStyle}>Cancelar</Text>
-            //           </Pressable>
-                        
-            //         </View>
-
-
-                    
-            //       </View>
-            //     </View>
-            //   </Modal>
-
-            //   <LinearGradient
-            //   colors={['#99D5C2', '#357676', 'transparent']}
-            //   style={styles.gradient}
-            //   >
-            //     <DiarySpend amount={dayAmount}></DiarySpend>
-
-            //     <WeeklyExpenses style={styles.weekly_expenses}></WeeklyExpenses>
-
-            //     <View>
-            //       <Icon
-            //         style={styles.icon_add_expense}
-            //         name='plus'
-            //         onPress={()=> setModalVisible(true)}
-            //       />
-            //     </View>
-            //     {/* {aux} */}
-
-            //   </LinearGradient>
-            // </View>
-
-          }
-        options={{ title: 'Welcome' }}
-        />
+      <Stack.Screen name="HomeScreen" component={ Home } />
       
-        
-
+      <Stack.Screen name="DiarySpendScreen" component={ HomeScreen } options={{ title: 'Welcome' }}/>
+      
       </Stack.Navigator>
     </NavigationContainer>
   );
