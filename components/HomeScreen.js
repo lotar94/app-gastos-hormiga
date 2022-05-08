@@ -1,5 +1,5 @@
-import React, { Component, useState } from 'react'
-import { StyleSheet, View, Modal, Text, Button, Pressable, Alert, TextInput, SafeAreaView } from 'react-native';
+import React, { useState } from 'react'
+import { StyleSheet, View, Modal, Text, Pressable, Alert, TextInput, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { LinearGradient } from 'expo-linear-gradient';
 import DiarySpend from './DiarySpend';
@@ -61,27 +61,25 @@ export function HomeScreen({ navigation }) {
           </View>
       </Modal>
 
-              <LinearGradient
-              colors={['#99D5C2', '#357676', 'transparent']}
-              style={styles.gradient}
-              >
-                <DiarySpend amount={dayAmount} navigation={navigation} ></DiarySpend>
-               
-                
-                
-                <WeeklyExpenses style={styles.weekly_expenses}></WeeklyExpenses>
+      <LinearGradient
+      colors={['#99D5C2', '#357676', 'transparent']}
+      style={styles.gradient}
+      >
+        
+        <DiarySpend amount={dayAmount} navigation={navigation} ></DiarySpend>
 
+        <WeeklyExpenses style={styles.weekly_expenses}></WeeklyExpenses>
 
-                <View>
-                  <Icon
-                    style={styles.icon_add_expense}
-                    name='plus'
-                    onPress={()=> setModalVisible(true)}
-                  />
-                </View>
-                
+        <View>
+          <Icon
+            style={styles.icon_add_expense}
+            name='plus'
+            onPress={()=> setModalVisible(true)}
+          />
+        </View>
+        
 
-              </LinearGradient>
+      </LinearGradient>
     </View>
   );
 }
