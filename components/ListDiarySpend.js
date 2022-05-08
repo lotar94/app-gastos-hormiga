@@ -1,28 +1,31 @@
 import React from 'react'
-import { StyleSheet, Text, View, SafeAreaView, SectionList, StatusBar, Button } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, SectionList, StatusBar, Pressable } from "react-native";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const DATA = [
   {
-    title: "Main dishes",
-    data: ["Pizza", "Burger", "Risotto"]
-  },
-  {
-    title: "Sides",
-    data: ["French Fries", "Onion Rings", "Fried Shrimps"]
-  },
-  {
-    title: "Drinks",
-    data: ["Water", "Coke", "Beer"]
-  },
-  {
-    title: "Desserts",
-    data: ["Cheese Cake", "Ice Cream"]
+    title: "Detalle",
+    data: ["Fried Shrimps", "Burger", "Risotto","French Fries", "Onion Rings", "Fried Shrimps"]
   }
 ];
+
+const Separator = () => (
+  <View style={styles.separator} />
+);
+
+const deleteAmount = ()=> {
+  console.log("Eliminar este")
+}
+
 
 const Item = ({ title }) => (
   <View style={styles.item}>
     <Text style={styles.title}>{title}</Text>
+    <Icon
+      style={styles.icon_add_expense}
+      name='trash'
+      onPress={()=> deleteAmount()}
+    />
   </View>
 );
 
@@ -30,10 +33,8 @@ export function ListDiarySpend({ navigation }) {
 
   return (
     <View style={styles.container1}>
-      <Text  style={styles.text}>Hoy</Text>
-      <Text  style={styles.text}>$3.790</Text>
-
-      <Text  style={styles.text_detail}>Detalle</Text>
+      <Text style={styles.text}>Hoy</Text>
+      <Text style={styles.text_current_amount}>$3.790</Text>
 
       <SafeAreaView style={styles.container}>
         <SectionList
@@ -42,20 +43,27 @@ export function ListDiarySpend({ navigation }) {
           renderItem={({ item }) => <Item title={item} />}
           renderSectionHeader={({ section: { title } }) => (
             <Text style={styles.header}>{title}</Text>
+            
           )}
         />
       </SafeAreaView>
 
-      <Button
-      title="Volver"
-      onPress={() => navigation.navigate('HomeScreen')}
-      />
+      <Separator />
+
+      <Pressable style={styles.button} onPress={() => navigation.navigate('HomeScreen')}>
+        <Text style={styles.text_button}>Volver</Text>
+      </Pressable>
 
     </View>    
   )
 }
 
 const styles = StyleSheet.create({
+  separator: {
+    marginVertical: 8,
+    borderBottomColor: '#737373',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
 
   container1:{
     paddingTop: 60,
@@ -80,10 +88,12 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 32,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
+    textAlign: "center"
   },
   title: {
-    fontSize: 24
+    fontSize: 24,
+    
   },
   text: {
     color: 'white',
@@ -91,13 +101,40 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontFamily: 'Inter_900Black'
   },
-  text_detail: {
-    marginTop: 40,
-    marginBottom: 20,
+  text_current_amount: {
+    marginBottom: 40,
     color: 'white',
-    fontSize: 30,
+    fontSize: 40,
     fontWeight: "bold",
     fontFamily: 'Inter_900Black'
-  }
+  },
+  btn_come_back: {
+    color: "#FFFFFF",
+    backgroundColor: "#F8F8F8"
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 20,
+    elevation: 3,
+    backgroundColor: '#347474',
+  },
+  text_button: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
+  },
+  icon_add_expense: {
+    fontSize:33,
+    color:'#C50000',
+    position: "absolute", 
+    alignSelf: "flex-end",
+    marginTop: 15,
+    paddingRight: 15
+  },
   
 })
