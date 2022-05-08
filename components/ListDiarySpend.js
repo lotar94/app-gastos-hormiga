@@ -9,14 +9,14 @@ const DATA = [
   }
 ];
 
-const Separator = () => (
-  <View style={styles.separator} />
-);
 
-const deleteAmount = ()=> {
+const deleteSpend = ()=> {
   console.log("Eliminar este")
 }
 
+const editSpend = ()=> {
+  console.log("Editar este")
+}
 
 const Item = ({ title }) => (
   <View style={styles.item}>
@@ -24,12 +24,12 @@ const Item = ({ title }) => (
     <Icon
       style={styles.icon_edit_expense}
       name='pencil'
-      onPress={()=> deleteAmount()}
+      onPress={()=> editSpend()}
     />
     <Icon
       style={styles.icon_add_expense}
       name='trash'
-      onPress={()=> deleteAmount()}
+      onPress={()=> deleteSpend()}
     />
   </View>
 );
@@ -53,8 +53,6 @@ export function ListDiarySpend({ navigation }) {
         />
       </SafeAreaView>
 
-      <Separator />
-
       <Pressable style={styles.button} onPress={() => navigation.navigate('HomeScreen')}>
         <Text style={styles.text_button}>Volver</Text>
       </Pressable>
@@ -64,12 +62,6 @@ export function ListDiarySpend({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  separator: {
-    marginVertical: 8,
-    borderBottomColor: '#737373',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
-
   container1:{
     paddingTop: 60,
     paddingBottom: 50,

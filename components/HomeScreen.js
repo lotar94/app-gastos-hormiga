@@ -1,9 +1,16 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, Modal, Text, Pressable, Alert, TextInput, SafeAreaView } from 'react-native';
+import { Keyboard, StyleSheet, View, Modal, Text, Pressable, Alert, TextInput, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { LinearGradient } from 'expo-linear-gradient';
 import DiarySpend from './DiarySpend';
 import WeeklyExpenses from './WeeklyExpenses';
+
+
+const HideKeyboard = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
 
 export function HomeScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -13,7 +20,9 @@ export function HomeScreen({ navigation }) {
   const [number, onChangeNumber] = React.useState(null);
   
   return (
+    
     <View style={styles.container}>
+     
       <Modal
         animationType="slide"
         transparent={true}
@@ -22,25 +31,30 @@ export function HomeScreen({ navigation }) {
           Alert.alert("Modal has been closed.");
           setModalVisible(!modalVisible);
         }}>
+          <HideKeyboard>
           <View style={styles.centeredView}>
+          
             <View style={styles.modalView}>
               <Text style={styles.modalText}>Nuevo Gasto</Text>
+              
+                <SafeAreaView>
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={onChangeNumber}
+                    value={number}
+                    placeholder="Monto"
+                    keyboardType="numeric"
+                  />
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={onChangeText}
+                    placeholder="Description"
+                    value={text}
+                  />
+                </SafeAreaView>
+              
 
-              <SafeAreaView>
-                <TextInput
-                  style={styles.input}
-                  onChangeText={onChangeNumber}
-                  value={number}
-                  placeholder="Monto"
-                  keyboardType="numeric"
-                />
-                <TextInput
-                  style={styles.input}
-                  onChangeText={onChangeText}
-                  placeholder="Description"
-                  value={text}
-                />
-              </SafeAreaView>
+              
 
               <View style= {styles.btn_action_section}>
                 <Pressable
@@ -58,17 +72,19 @@ export function HomeScreen({ navigation }) {
                 </Pressable>
               </View>
             </View>
+            
           </View>
+          </HideKeyboard>
       </Modal>
 
       <LinearGradient
       colors={['#99D5C2', '#357676', 'transparent']}
       style={styles.gradient}
       >
-        
+         
         <DiarySpend amount={dayAmount} navigation={navigation} ></DiarySpend>
 
-        <WeeklyExpenses style={styles.weekly_expenses}></WeeklyExpenses>
+        <WeeklyExpenses style={styles.weekly_expenses}  navigation={navigation}></WeeklyExpenses>
 
         <View>
           <Icon
@@ -78,9 +94,11 @@ export function HomeScreen({ navigation }) {
           />
         </View>
         
-
+       
       </LinearGradient>
+      
     </View>
+    
   );
 }
 
