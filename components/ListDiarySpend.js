@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const DATA = [
   {
     title: "Detalle",
-    data: ["Fried Shrimps", "Burger", "Risotto","French Fries", "Onion Rings", "Fried Shrimps"]
+    data: ["$2.890   Fried Shrimps", "$10.540   Burger", "$970   Risotto","$123.460   French Fries", "$350   Onion Rings", "$7.590    Fried Shrimps"]
   }
 ];
 
@@ -21,6 +21,11 @@ const deleteAmount = ()=> {
 const Item = ({ title }) => (
   <View style={styles.item}>
     <Text style={styles.title}>{title}</Text>
+    <Icon
+      style={styles.icon_edit_expense}
+      name='pencil'
+      onPress={()=> deleteAmount()}
+    />
     <Icon
       style={styles.icon_add_expense}
       name='trash'
@@ -67,7 +72,7 @@ const styles = StyleSheet.create({
 
   container1:{
     paddingTop: 60,
-    paddingBottom: 55,
+    paddingBottom: 50,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -79,21 +84,26 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: StatusBar.currentHeight,
     marginHorizontal: 16,
-    width: '90%'
+    width: '93%'
   },
   item: {
-    backgroundColor: "#f9c2ff",
+    backgroundColor: "#347474",
     padding: 20,
-    marginVertical: 8
+    marginVertical: 8,
+    borderRadius: 40
   },
   header: {
     fontSize: 32,
-    backgroundColor: "#fff",
-    textAlign: "center"
+    backgroundColor: "#5BB78D",
+    textAlign: "center",
+    // fontWeight: 'bold',
+    fontFamily: 'Inter_900Black',
+    color: "#35495E",
+    
   },
   title: {
     fontSize: 24,
-    
+    color: "#FFFF"
   },
   text: {
     color: 'white',
@@ -102,7 +112,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_900Black'
   },
   text_current_amount: {
-    marginBottom: 40,
+    marginBottom: 30,
     color: 'white',
     fontSize: 40,
     fontWeight: "bold",
@@ -119,7 +129,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 20,
     elevation: 3,
-    backgroundColor: '#347474',
+    backgroundColor: '#35495E',
   },
   text_button: {
     fontSize: 16,
@@ -130,11 +140,19 @@ const styles = StyleSheet.create({
   },
   icon_add_expense: {
     fontSize:33,
-    color:'#C50000',
+    color:'#FF7E67',
     position: "absolute", 
     alignSelf: "flex-end",
     marginTop: 15,
-    paddingRight: 15
+    paddingRight: 25
   },
+  icon_edit_expense: {
+    fontSize:33,
+    color:'#35495E',
+    position: "absolute", 
+    alignSelf: "flex-end",
+    marginTop: 15,
+    paddingRight: 65
+  }
   
 })
