@@ -10,16 +10,15 @@ export default class DiarySpend extends Component {
       <View style={styles.container}>
         <TouchableOpacity style={styles.touchable_style} onPress={()=> {navigation.navigate('ListDiarySpendScreen')}}>
           <View style={styles.box} >
-          <Text style={styles.text}>
-            Hoy
-          </Text>
-          <Text style={styles.text}>
-            $ {amount}
-          </Text>
+            <Text style={styles.text}>
+              Hoy
+            </Text>
+            <Text style={styles.text}>
+              $ {amount}
+            </Text>
           </View>
         </TouchableOpacity>      
       </View>
-    
     )
   }
 }
