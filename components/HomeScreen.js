@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { LinearGradient } from 'expo-linear-gradient';
 import DiarySpend from './DiarySpend';
 import WeeklyExpenses from './WeeklyExpenses';
+import firebase from '../database/firebase';
 
 
 const HideKeyboard = ({ children }) => (
@@ -59,14 +60,32 @@ export function HomeScreen({ navigation }) {
               <View style= {styles.btn_action_section}>
                 <Pressable
                   style={[styles.button, styles.buttonClose_save]}
-                  onPress={() => setModalVisible(!modalVisible)}
+                  onPress={async () => {
+                    if (number === null || text === null || number === '' || text === '') {
+                      alert('Ingresa los datos ctm');
+                    } else {
+                      const data = {
+                        amount: number,
+                        description: text
+                      }
+                      console.log("leslie lamport", data)
+                      await firebase.db.collection('spending').add(data);
+                      setModalVisible(!modalVisible)
+                    }
+                  }}
                 >
                   <Text style={styles.textStyle}>Guardar</Text>
                 </Pressable>
 
                 <Pressable
                   style={[styles.button, styles.buttonClose_cancel]}
-                  onPress={() => setModalVisible(!modalVisible)}
+                  onPress={() => {
+                    onChangeText(null)
+                    onChangeNumber(null)
+                    // number = null;
+                    // text = null;
+                    setModalVisible(!modalVisible)
+                  }}
                 >
                   <Text style={styles.textStyle}>Cancelar</Text>
                 </Pressable>
