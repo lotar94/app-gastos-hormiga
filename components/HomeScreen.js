@@ -15,7 +15,7 @@ const HideKeyboard = ({ children }) => (
 
 export function HomeScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [dayAmount, setDayAmount] = useState('0')
+  
 
   const [text, onChangeText] = React.useState(null);
   const [number, onChangeNumber] = React.useState(null);
@@ -68,9 +68,11 @@ export function HomeScreen({ navigation }) {
                         amount: number,
                         description: text
                       }
-                      console.log("leslie lamport", data)
-                      await firebase.db.collection('spending').add(data);
+                      onChangeText(null)
+                      onChangeNumber(null)
                       setModalVisible(!modalVisible)
+                      await firebase.db.collection('spending').add(data);
+                      
                     }
                   }}
                 >
@@ -82,8 +84,6 @@ export function HomeScreen({ navigation }) {
                   onPress={() => {
                     onChangeText(null)
                     onChangeNumber(null)
-                    // number = null;
-                    // text = null;
                     setModalVisible(!modalVisible)
                   }}
                 >
@@ -101,7 +101,7 @@ export function HomeScreen({ navigation }) {
       style={styles.gradient}
       >
          
-        <DiarySpend amount={dayAmount} navigation={navigation} ></DiarySpend>
+        <DiarySpend navigation={navigation} ></DiarySpend>
 
         <WeeklyExpenses style={styles.weekly_expenses}  navigation={navigation}></WeeklyExpenses>
 

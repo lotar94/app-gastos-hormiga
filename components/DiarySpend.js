@@ -1,9 +1,40 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect } from 'react'
 import { View , Text, StyleSheet, TouchableOpacity } from 'react-native'
+import firebase from '../database/firebase'
 
 export default class DiarySpend extends Component {
+  constructor(props) {
+    super(props)
+    this._isMounted = false
+  }
+  state = {
+    totalAmount: '0'
+  }
+
+  componentDidMount() {
+    this._isMounted = true
+    this._isMounted && this.getSpending()
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
+  }
+
+  async getSpending() {
+    
+    let values = []; 
+    await firebase.db.collection('spending').onSnapshot(querySnapshot => {
+      values = []; 
+      querySnapshot.docs.forEach( doc => {    
+        const {amount} = doc.data()
+        values.push(parseInt(amount))
+      })
+      this._isMounted && this.setState({totalAmount:values.map(item => item).reduce((prev, curr) => prev + curr, 0).toString()})
+    })
+  }
+
+
   render() {
-    const { amount } = this.props
     const { navigation } = this.props
 
     return (
@@ -14,7 +45,7 @@ export default class DiarySpend extends Component {
               Hoy
             </Text>
             <Text style={styles.text}>
-              $ {amount}
+              $ {this.state.totalAmount}
             </Text>
           </View>
         </TouchableOpacity>      
