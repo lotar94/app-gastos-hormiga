@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect, useRef } from 'react'
-import { StyleSheet, Text, TextInput, View, SafeAreaView, SectionList, StatusBar, Pressable, Modal, TouchableWithoutFeedback } from "react-native";
+import { StyleSheet, Text, TextInput, View, SafeAreaView, SectionList, StatusBar, Pressable, Keyboard, Modal, TouchableWithoutFeedback } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from "../database/firebase";
 
@@ -25,7 +25,8 @@ export default class ListDiarySpend extends Component {
     totalAmount: '0',
     modalVisible:false,
     text:null,
-    number:null
+    number:null,
+    id: null
   }
 
   componentDidMount() {
@@ -46,7 +47,7 @@ export default class ListDiarySpend extends Component {
       querySnapshot.docs.forEach((doc) => {
         const { amount, description } = doc.data();
         amountValues.push(parseInt(amount))
-        values.push({info:`$${amount}   ${description}`, id: doc.id});
+        values.push({info:`$${amount}   ${description}`, jsonObject: {id: doc.id, amount,description}});
       });
       this._isMounted && this.setState({totalAmount:amountValues.map(item => item).reduce((prev, curr) => prev + curr, 0).toString()})
       this._isMounted && this.setState({DATA:[{title: "Detalle", data: values}]})
@@ -58,12 +59,11 @@ export default class ListDiarySpend extends Component {
   }
 
   deleteSpend(id) {
-    console.log("Eliminar este ", id)
     this.deleteSpending(id)
   }
 
-  editSpend(id) {
-    console.log("Editar este", id)
+  editSpend(object) {
+    this.setState({modalVisible: true, number: object.amount, text: object.description, id: object.id})
   }
 
   render() {
@@ -74,21 +74,18 @@ export default class ListDiarySpend extends Component {
         <Icon
           style={styles.icon_edit_expense}
           name='pencil'
-          onPress={()=> this.editSpend(title.id)}
+          onPress={()=> this.editSpend(title.jsonObject)}
         />
         <Icon
           style={styles.icon_add_expense}
           name='trash'
-          onPress={()=> this.deleteSpend(title.id)}
+          onPress={()=> this.deleteSpend(title.jsonObject.id)}
         />
       </View>
     );
     const { navigation } = this.props
     return (
       <View style={styles.container1}>
-
-{/* 
-
         <Modal
         animationType="slide"
         transparent={true}
@@ -107,21 +104,22 @@ export default class ListDiarySpend extends Component {
                 <SafeAreaView>
                   <TextInput
                     style={styles.input}
-                    onChangeText={this.setState({number:number})}
-                    value={number}
+                    onChangeText={(newNumber) => {
+                      this.setState({number:newNumber})
+                    }}
+                    value={this.state.number}
                     placeholder="Monto"
                     keyboardType="numeric"
                   />
                   <TextInput
                     style={styles.input}
-                    onChangeText={this.setState({text: this.state.text})}
+                    onChangeText={(newText) => {
+                      this.setState({text: newText})
+                    }}
                     placeholder="Description"
-                    value={text}
+                    value={this.state.text}
                   />
                 </SafeAreaView>
-              
-
-              
 
               <View style= {styles.btn_action_section}>
                 <Pressable
@@ -136,8 +134,8 @@ export default class ListDiarySpend extends Component {
                       }
                       this.setState({number: null})
                       this.setState({text: null})
-                      this.setState({modalVisible: !modalVisible})
-                      await firebase.db.collection('spending').add(data);
+                      this.setState({modalVisible: !this.state.modalVisible})
+                      await firebase.db.collection('spending').doc(this.state.id).set(data)
                       
                     }
                   }}
@@ -148,9 +146,7 @@ export default class ListDiarySpend extends Component {
                 <Pressable
                   style={[styles.button, styles.buttonClose_cancel]}
                   onPress={() => {
-                    this.setState({number: null})
-                    this.setState({text: null})
-                    this.setState({modalVisible: !modalVisible})
+                    this.setState({modalVisible: !this.state.modalVisible, number:null, text: null, id: null})
                   }}
                 >
                   <Text style={styles.textStyle}>Cancelar</Text>
@@ -162,15 +158,6 @@ export default class ListDiarySpend extends Component {
           </HideKeyboard>
         </Modal>
 
-
- */}
-
-
-
-
-
-
-        
         <Text style={styles.text}>Hoy</Text>
         <Text style={styles.text_current_amount}>${this.state.totalAmount}</Text>
 
@@ -185,7 +172,7 @@ export default class ListDiarySpend extends Component {
           />
         </SafeAreaView>
 
-        <Pressable style={styles.button} onPress={() => navigation.navigate('HomeScreen')}>
+        <Pressable style={styles.button_come_back} onPress={() => navigation.navigate('HomeScreen')}>
           <Text style={styles.text_button}>Volver</Text>
         </Pressable>
 
@@ -228,7 +215,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    color: "#FFFF"
+    color: "#FFFF",
+    marginRight:80
   },
   text: {
     color: 'white',
@@ -247,7 +235,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     backgroundColor: "#F8F8F8"
   },
-  button: {
+  button_come_back: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
@@ -278,6 +266,73 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     marginTop: 15,
     paddingRight: 65
-  }
+  },
+  // Modal style init
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose_save: {
+    width:90,
+    marginEnd: 145,
+    backgroundColor: "#ED7F6A",
+  },
+  buttonClose_cancel: {
+    width:90,
+    marginEnd: 60,
+    backgroundColor: "#35495E",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  },
+  // Modal style end
+
+  input: {
+    height: 40,
+    width:160,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
+  btn_action_section: {
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: '70%',
+    padding: 20,
+    height: 87
+  },
   
 })
