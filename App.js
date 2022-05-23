@@ -5,7 +5,7 @@ import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import { NavigationContainer } from '@react-navigation/native';
 import { HomeScreen } from './components/HomeScreen'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { ListDiarySpend } from './components/ListDiarySpend';
+import ListDiarySpend from './components/ListDiarySpend';
 
 const Stack = createNativeStackNavigator();
 

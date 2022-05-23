@@ -1,14 +1,7 @@
-import React from 'react'
+import React, { Component, useState, useEffect, useRef } from 'react'
 import { StyleSheet, Text, View, SafeAreaView, SectionList, StatusBar, Pressable } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
-
-const DATA = [
-  {
-    title: "Detalle",
-    data: ["$2.890   Fried Shrimps", "$10.540   Burger", "$970   Risotto","$123.460   French Fries", "$350   Onion Rings", "$7.590    Fried Shrimps"]
-  }
-];
-
+import firebase from "../database/firebase";
 
 const deleteSpend = ()=> {
   console.log("Eliminar este")
@@ -34,31 +27,73 @@ const Item = ({ title }) => (
   </View>
 );
 
-export function ListDiarySpend({ navigation }) {
+export default class ListDiarySpend extends Component {
+  constructor(props) {
+    super(props)
+    this._isMounted = false
+  }
 
-  return (
-    <View style={styles.container1}>
-      <Text style={styles.text}>Hoy</Text>
-      <Text style={styles.text_current_amount}>$3.790</Text>
+  state = {
+    DATA: [
+      {
+        title: "Detalle",
+        data: []
+      }
+    ],
+    totalAmount: '0'
+  }
 
-      <SafeAreaView style={styles.container}>
-        <SectionList
-          sections={DATA}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({ item }) => <Item title={item} />}
-          renderSectionHeader={({ section: { title } }) => (
-            <Text style={styles.header}>{title}</Text>
-            
-          )}
-        />
-      </SafeAreaView>
+  componentDidMount() {
+    this._isMounted = true
+    this._isMounted && this.getSpending()
+  }
 
-      <Pressable style={styles.button} onPress={() => navigation.navigate('HomeScreen')}>
-        <Text style={styles.text_button}>Volver</Text>
-      </Pressable>
+  componentWillUnmount() {
+    this._isMounted = false
+  }
 
-    </View>    
-  )
+  async getSpending() {
+    let values = []; 
+    let amountValues = [];
+    await firebase.db.collection("spending").onSnapshot((querySnapshot) => {
+      values = [];
+      amountValues = [];
+      querySnapshot.docs.forEach((doc) => {
+        const { amount, description } = doc.data();
+        amountValues.push(parseInt(amount))
+        values.push(`$${amount}   ${description}`);
+      });
+      this._isMounted && this.setState({totalAmount:amountValues.map(item => item).reduce((prev, curr) => prev + curr, 0).toString()})
+      this._isMounted && this.setState({DATA:[{title: "Detalle", data: values}]})
+    });
+  }
+
+  render() {
+    const { navigation } = this.props
+    return (
+      <View style={styles.container1}>
+        <Text style={styles.text}>Hoy</Text>
+        <Text style={styles.text_current_amount}>${this.state.totalAmount}</Text>
+
+        <SafeAreaView style={styles.container}>
+          <SectionList
+            sections={this.state.DATA}
+            keyExtractor={(item, index) => item + index}
+            renderItem={({ item }) => <Item title={item} />}
+            renderSectionHeader={({ section: { title } }) => (
+              <Text style={styles.header}>{title}</Text>
+              
+            )}
+          />
+        </SafeAreaView>
+
+        <Pressable style={styles.button} onPress={() => navigation.navigate('HomeScreen')}>
+          <Text style={styles.text_button}>Volver</Text>
+        </Pressable>
+
+      </View>    
+    )
+  }
 }
 
 const styles = StyleSheet.create({
