@@ -1,37 +1,19 @@
 import React, { Component, useState, useEffect, useRef } from 'react'
-import { StyleSheet, Text, View, SafeAreaView, SectionList, StatusBar, Pressable } from "react-native";
+import { StyleSheet, Text, TextInput, View, SafeAreaView, SectionList, StatusBar, Pressable, Modal, TouchableWithoutFeedback } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firebase from "../database/firebase";
 
-const deleteSpend = ()=> {
-  console.log("Eliminar este")
-}
-
-const editSpend = ()=> {
-  console.log("Editar este")
-}
-
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-    <Icon
-      style={styles.icon_edit_expense}
-      name='pencil'
-      onPress={()=> editSpend()}
-    />
-    <Icon
-      style={styles.icon_add_expense}
-      name='trash'
-      onPress={()=> deleteSpend()}
-    />
-  </View>
+const HideKeyboard = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
 );
-
 export default class ListDiarySpend extends Component {
   constructor(props) {
     super(props)
     this._isMounted = false
   }
+  
 
   state = {
     DATA: [
@@ -40,7 +22,10 @@ export default class ListDiarySpend extends Component {
         data: []
       }
     ],
-    totalAmount: '0'
+    totalAmount: '0',
+    modalVisible:false,
+    text:null,
+    number:null
   }
 
   componentDidMount() {
@@ -61,17 +46,131 @@ export default class ListDiarySpend extends Component {
       querySnapshot.docs.forEach((doc) => {
         const { amount, description } = doc.data();
         amountValues.push(parseInt(amount))
-        values.push(`$${amount}   ${description}`);
+        values.push({info:`$${amount}   ${description}`, id: doc.id});
       });
       this._isMounted && this.setState({totalAmount:amountValues.map(item => item).reduce((prev, curr) => prev + curr, 0).toString()})
       this._isMounted && this.setState({DATA:[{title: "Detalle", data: values}]})
     });
   }
 
+  async deleteSpending(id) {
+    await firebase.db.collection("spending").doc(id).delete();
+  }
+
+  deleteSpend(id) {
+    console.log("Eliminar este ", id)
+    this.deleteSpending(id)
+  }
+
+  editSpend(id) {
+    console.log("Editar este", id)
+  }
+
   render() {
+
+    const Item = ({ title }) => (
+      <View style={styles.item}>
+        <Text style={styles.title}>{title.info}</Text>
+        <Icon
+          style={styles.icon_edit_expense}
+          name='pencil'
+          onPress={()=> this.editSpend(title.id)}
+        />
+        <Icon
+          style={styles.icon_add_expense}
+          name='trash'
+          onPress={()=> this.deleteSpend(title.id)}
+        />
+      </View>
+    );
     const { navigation } = this.props
     return (
       <View style={styles.container1}>
+
+{/* 
+
+        <Modal
+        animationType="slide"
+        transparent={true}
+        visible={this.state.modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          this.setState({modalVisible: !modalVisible})
+          
+        }}>
+          <HideKeyboard>
+          <View style={styles.centeredView}>
+          
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Nuevo Gasto</Text>
+              
+                <SafeAreaView>
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={this.setState({number:number})}
+                    value={number}
+                    placeholder="Monto"
+                    keyboardType="numeric"
+                  />
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={this.setState({text: this.state.text})}
+                    placeholder="Description"
+                    value={text}
+                  />
+                </SafeAreaView>
+              
+
+              
+
+              <View style= {styles.btn_action_section}>
+                <Pressable
+                  style={[styles.button, styles.buttonClose_save]}
+                  onPress={async () => {
+                    if (this.state.number === null || this.state.text === null || this.state.number === '' || this.state.text === '') {
+                      alert('Ingresa los datos ctm');
+                    } else {
+                      const data = {
+                        amount: this.state.number,
+                        description: this.state.text
+                      }
+                      this.setState({number: null})
+                      this.setState({text: null})
+                      this.setState({modalVisible: !modalVisible})
+                      await firebase.db.collection('spending').add(data);
+                      
+                    }
+                  }}
+                >
+                  <Text style={styles.textStyle}>Guardar</Text>
+                </Pressable>
+
+                <Pressable
+                  style={[styles.button, styles.buttonClose_cancel]}
+                  onPress={() => {
+                    this.setState({number: null})
+                    this.setState({text: null})
+                    this.setState({modalVisible: !modalVisible})
+                  }}
+                >
+                  <Text style={styles.textStyle}>Cancelar</Text>
+                </Pressable>
+              </View>
+            </View>
+            
+          </View>
+          </HideKeyboard>
+        </Modal>
+
+
+ */}
+
+
+
+
+
+
+        
         <Text style={styles.text}>Hoy</Text>
         <Text style={styles.text_current_amount}>${this.state.totalAmount}</Text>
 
@@ -82,7 +181,6 @@ export default class ListDiarySpend extends Component {
             renderItem={({ item }) => <Item title={item} />}
             renderSectionHeader={({ section: { title } }) => (
               <Text style={styles.header}>{title}</Text>
-              
             )}
           />
         </SafeAreaView>
