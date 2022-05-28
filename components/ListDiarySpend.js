@@ -83,7 +83,16 @@ export default class ListDiarySpend extends Component {
         />
       </View>
     );
-    const { navigation } = this.props
+    const { route, navigation } = this.props
+    const textTati = 'Grandes pensadores te falta calle de lo mundano tati 2022:00:14'
+
+    let dayToShow = 'Hoy'
+    if (new Date().toLocaleDateString() === route.params.day) {
+      dayToShow = 'Hoy'
+    } else {
+      dayToShow = route.params.day
+    }
+    
     return (
       <View style={styles.container1}>
         <Modal
@@ -158,7 +167,7 @@ export default class ListDiarySpend extends Component {
           </HideKeyboard>
         </Modal>
 
-        <Text style={styles.text}>Hoy</Text>
+        <Text style={styles.text}>{dayToShow}</Text>
         <Text style={styles.text_current_amount}>${this.state.totalAmount}</Text>
 
         <SafeAreaView style={styles.container}>

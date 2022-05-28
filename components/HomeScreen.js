@@ -65,6 +65,7 @@ export function HomeScreen({ navigation }) {
                       alert('Ingresa los datos ctm');
                     } else {
                       const data = {
+                        date: new Date().toLocaleDateString(),
                         amount: number,
                         description: text
                       }
