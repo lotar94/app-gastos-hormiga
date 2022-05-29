@@ -56,18 +56,6 @@ export default class ListDiarySpend extends Component {
     .catch((error) => {
       console.error("Error getting documents: ", error);
     });
-
-    // await firebase.db.collection("spending").onSnapshot((querySnapshot) => {
-    //   values = [];
-    //   amountValues = [];
-    //   querySnapshot.docs.forEach((doc) => {
-    //     const { amount, description } = doc.data();
-    //     amountValues.push(parseInt(amount))
-    //     values.push({info:`$${amount}   ${description}`, jsonObject: {id: doc.id, amount,description}});
-    //   });
-    //   this._isMounted && this.setState({totalAmount:amountValues.map(item => item).reduce((prev, curr) => prev + curr, 0).toString()})
-    //   this._isMounted && this.setState({DATA:[{title: "Detalle", data: values}]})
-    // });
   }
 
   async deleteSpending(id) {
