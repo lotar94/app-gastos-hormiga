@@ -30,28 +30,44 @@ export default class ListDiarySpend extends Component {
   }
 
   componentDidMount() {
+    const { route} = this.props
     this._isMounted = true
-    this._isMounted && this.getSpending()
+    this._isMounted && this.getSpending(route.params.day)
   }
 
   componentWillUnmount() {
     this._isMounted = false
   }
 
-  async getSpending() {
+  async getSpending(date) {
     let values = []; 
     let amountValues = [];
-    await firebase.db.collection("spending").onSnapshot((querySnapshot) => {
-      values = [];
-      amountValues = [];
-      querySnapshot.docs.forEach((doc) => {
+    await firebase.db.collection("spending").where("date", "==", date)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
         const { amount, description } = doc.data();
         amountValues.push(parseInt(amount))
         values.push({info:`$${amount}   ${description}`, jsonObject: {id: doc.id, amount,description}});
       });
       this._isMounted && this.setState({totalAmount:amountValues.map(item => item).reduce((prev, curr) => prev + curr, 0).toString()})
       this._isMounted && this.setState({DATA:[{title: "Detalle", data: values}]})
+    })
+    .catch((error) => {
+      console.error("Error getting documents: ", error);
     });
+
+    // await firebase.db.collection("spending").onSnapshot((querySnapshot) => {
+    //   values = [];
+    //   amountValues = [];
+    //   querySnapshot.docs.forEach((doc) => {
+    //     const { amount, description } = doc.data();
+    //     amountValues.push(parseInt(amount))
+    //     values.push({info:`$${amount}   ${description}`, jsonObject: {id: doc.id, amount,description}});
+    //   });
+    //   this._isMounted && this.setState({totalAmount:amountValues.map(item => item).reduce((prev, curr) => prev + curr, 0).toString()})
+    //   this._isMounted && this.setState({DATA:[{title: "Detalle", data: values}]})
+    // });
   }
 
   async deleteSpending(id) {
@@ -86,12 +102,14 @@ export default class ListDiarySpend extends Component {
     const { route, navigation } = this.props
     const textTati = 'Grandes pensadores te falta calle de lo mundano tati 2022:00:14'
 
-    let dayToShow = 'Hoy'
+    let dayToShow = ''
     if (new Date().toLocaleDateString() === route.params.day) {
       dayToShow = 'Hoy'
     } else {
       dayToShow = route.params.day
     }
+
+
     
     return (
       <View style={styles.container1}>

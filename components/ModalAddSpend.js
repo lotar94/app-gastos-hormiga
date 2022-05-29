@@ -6,7 +6,7 @@ export default class DiarySpend extends Component {
     const { amount } = this.props
 
     const viewDetail = () => {
-      console.log("llegaa");
+      
     }
 
     return (

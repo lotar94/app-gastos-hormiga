@@ -21,9 +21,9 @@ export default class DiarySpend extends Component {
   }
 
   async getSpending() {
-    
+    const today = new Date().toLocaleDateString()
     let values = []; 
-    await firebase.db.collection('spending').onSnapshot(querySnapshot => {
+    await firebase.db.collection('spending').where("date", "==", today).onSnapshot(querySnapshot => {
       values = []; 
       querySnapshot.docs.forEach( doc => {    
         const {amount} = doc.data()
@@ -39,7 +39,7 @@ export default class DiarySpend extends Component {
 
     return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.touchable_style} onPress={()=> {navigation.navigate('ListDiarySpendScreen')}}>
+        <TouchableOpacity style={styles.touchable_style} onPress={()=> {navigation.navigate('ListDiarySpendScreen',{day: new Date().toLocaleDateString()})}}>
           <View style={styles.box} >
             <Text style={styles.text}>
               Hoy
