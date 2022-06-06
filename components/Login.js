@@ -1,11 +1,6 @@
 import React, { useState } from 'react'
-import { Keyboard, StyleSheet, View, Modal, Text, Pressable, Alert, TextInput, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
+import { Keyboard, StyleSheet, View, Text, Pressable, TextInput, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { LinearGradient } from 'expo-linear-gradient';
-import DiarySpend from './DiarySpend';
-import WeeklyExpenses from './WeeklyExpenses';
-import firebase from '../database/firebase';
-
 const HideKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
@@ -15,8 +10,12 @@ const HideKeyboard = ({ children }) => (
 
 export function Login({ navigation }) {
   
-  const [text, onChangeText] = React.useState(null);
-  const [number, onChangeNumber] = React.useState(null);
+  const [text, onChangeText] = useState(null);
+  const [number, onChangeNumber] = useState(null);
+
+  const googleAuth = ()=> {
+    console.log('login with google');
+  }
 
   return (
     <HideKeyboard>
@@ -42,6 +41,12 @@ export function Login({ navigation }) {
       
           <Pressable style={styles.button_come_back} onPress={() => navigation.navigate('HomeScreen')}>
             <Text style={styles.text_button}>Ingresar</Text>
+          </Pressable>
+          <Pressable style={styles.button_icon_google} onPress={() => googleAuth()}>
+            <Icon
+              style={styles.icon_google}
+              name='google'
+            />
           </Pressable>
         
       </View>
@@ -74,6 +79,23 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     elevation: 3,
     backgroundColor: '#35495E',
+    width: 150
+  },
+  button_icon_google: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 20,
+    elevation: 3,
+    backgroundColor: '#35495E',
+    marginTop: 12,
+    width: 150
+
+  },
+  icon_google : {
+    fontSize:17,
+    color: 'white'
   },
   text_button: {
     fontSize: 16,

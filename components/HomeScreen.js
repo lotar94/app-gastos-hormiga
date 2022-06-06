@@ -17,8 +17,8 @@ export function HomeScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   
 
-  const [text, onChangeText] = React.useState(null);
-  const [number, onChangeNumber] = React.useState(null);
+  const [text, onChangeText] = useState(null);
+  const [number, onChangeNumber] = useState(null);
   
   return (
     
