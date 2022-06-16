@@ -14,7 +14,6 @@ export default class ListDiarySpend extends Component {
     this._isMounted = false
   }
   
-
   state = {
     DATA: [
       {

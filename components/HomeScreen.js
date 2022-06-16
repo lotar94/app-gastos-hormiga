@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import DiarySpend from './DiarySpend';
 import WeeklyExpenses from './WeeklyExpenses';
 import firebase from '../database/firebase';
+import { useAuth } from '../context/authContext';
 
 
 const HideKeyboard = ({ children }) => (
@@ -14,6 +15,10 @@ const HideKeyboard = ({ children }) => (
 );
 
 export function HomeScreen({ navigation }) {
+
+  const {user} = useAuth();
+  console.log(user);
+
   const [modalVisible, setModalVisible] = useState(false);
   
 
