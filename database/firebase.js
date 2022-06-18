@@ -8,17 +8,16 @@ import 'firebase/firestore'
 import firebase from 'firebase/compat/app';
 
 import 'firebase/compat/auth';
-
 import 'firebase/compat/firestore';
+import {apiKey,authDomain, projectId,storageBucket,messagingSenderId,appId} from '@env'
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCz9gMpqXOwXyEtscvYMe7GNn8VaWDOq1g",
-  authDomain: "app-gastos-homirga.firebaseapp.com",
-  projectId: "app-gastos-homirga",
-  storageBucket: "app-gastos-homirga.appspot.com",
-  messagingSenderId: "407026696746",
-  appId: "1:407026696746:web:ca7a7cd2fe5e34638c7953"
+  apiKey: apiKey,
+  authDomain: authDomain,
+  projectId: projectId,
+  storageBucket: storageBucket,
+  messagingSenderId: messagingSenderId,
+  appId: appId
 };
 
 // Initialize Firebase

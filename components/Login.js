@@ -84,7 +84,7 @@ export function Login({ navigation }) {
         <Text style= {styles.text_login}>
         Login
         </Text>
-        {/* <SafeAreaView>
+        <SafeAreaView>
           <TextInput
             style={styles.input}
             onChangeText={onChangeNumber}
@@ -102,7 +102,7 @@ export function Login({ navigation }) {
       
           <Pressable style={styles.button_come_back} onPress={() => navigation.navigate('HomeScreen')}>
             <Text style={styles.text_button}>Ingresar</Text>
-          </Pressable> */}
+          </Pressable>
           <Pressable style={styles.button_icon_google} onPress={() => googleAuth()}>
             <Icon
               style={styles.icon_google}
