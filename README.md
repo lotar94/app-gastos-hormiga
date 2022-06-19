@@ -1,11 +1,7 @@
 # App gastos hormigas
 
 ## Aplicacion movil creada con React Native ⚛️ para llevar registros de los gastos del día a día 
-<img src="assets/img-readme/IMG_0822%202.PNG" alt="drawing" width="90" height="150"/>
-<img src="assets/img-readme/IMG_0823.PNG" alt="drawing" width="90" height="150"/>
-<img src="assets/img-readme/IMG_0824.PNG" alt="drawing" width="90" height="150"/>
-
-
+<img src="./assets/img-readme/image_app.png" alt="drawing" width="650" height="400"/>
 
 ## Requisitos 📝
 - nodejs and npm [Nodejs](https://nodejs.org/en/)
@@ -22,7 +18,7 @@ appId=1:xxxxxxxxxxxxxxxxx
 
 
 
-## To run in local 💻
+## Para correr en local 💻
 ```
 npm install --global expo-cli
 ```
