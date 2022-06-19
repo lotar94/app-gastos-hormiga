@@ -1,15 +1,8 @@
 import React, { useState } from 'react'
 import { Keyboard, StyleSheet, View, Text, Pressable, TextInput, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { GoogleAuthProvider } from "firebase/auth";
-// import { getAuth } from "firebase/auth";
-// import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { getAuth, signInWithCustomToken } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { app } from "../database/firebase";
 
-
-
-
-const provider = new GoogleAuthProvider();
 
 const HideKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -20,63 +13,34 @@ const HideKeyboard = ({ children }) => (
 
 export function Login({ navigation }) {
   
-  const [text, onChangeText] = useState(null);
-  const [number, onChangeNumber] = useState(null);
+  const [email, onChangeEmail] = useState(null);
+  const [password, onChangePassword] = useState(null);
 
+  const auth = getAuth(app);
   
-  const auth = getAuth();
-
-  const googleAuth = ()=> {
-    console.log('sync with firebase step 1');
-    signInWithCustomToken(auth, 'token')
-      .then((userCredential) => {
-        // Signed in
-        console.log("logeado");
-        const user = userCredential.user;
-        // ...
-      })
-      .catch((error) => {
-        console.log("Error en login");
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ...
-    });
-
-
-
-
-
-    // provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-    // const auth = getAuth();
-    // signInWithPopup(auth, provider)
-    // .then((result) => {
-    //   // This gives you a Google Access Token. You can use it to access the Google API.
-    //   const credential = GoogleAuthProvider.credentialFromResult(result);
-    //   const token = credential.accessToken;
-    //   // The signed-in user info.
-    //   const user = result.user;
-    //   // ...
-    // }).catch((error) => {
-    //   // Handle Errors here.
-    //   const errorCode = error.code;
-    //   const errorMessage = error.message;
-    //   // The email of the user's account used.
-    //   const email = error.customData.email;
-    //   // The AuthCredential type that was used.
-    //   const credential = GoogleAuthProvider.credentialFromError(error);
-    //   // ...
-    // });
-    // auth.languageCode = 'it';
-    // // To apply the default browser preference instead of explicitly setting it.
-    // // firebase.auth().useDeviceLanguage();
-
-    // provider.setCustomParameters({
-    //   'login_hint': 'user@example.com'
-    // });
+  const handleCreateAccount = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((res)=>{
+      console.log('Res createAccount => ',res);
+    })
+    .catch((err) => {
+      console.log(err);
+      alert(err)
+    })
   }
 
-  
-  
+  const handleSignIn = (navigation) => {
+    
+    signInWithEmailAndPassword(auth, email, password)
+    .then((res)=> {
+      console.log("Signed in!", res);
+      navigation.navigate('HomeScreen')
+    })
+    .catch((err) => {
+      console.log(err);
+      alert(err)
+    })
+  }
 
   return (
     <HideKeyboard>
@@ -87,28 +51,37 @@ export function Login({ navigation }) {
         <SafeAreaView>
           <TextInput
             style={styles.input}
-            onChangeText={onChangeNumber}
-            value={number}
+            onChangeText={onChangeEmail}
+            value={email}
             placeholder="Correo"
             keyboardType="email-address"
           />
           <TextInput
             style={styles.input}
-            onChangeText={onChangeText}
+            onChangeText={onChangePassword}
             placeholder="Contraseña"
-            value={text}
+            keyboardType="password"
+            secureTextEntry={true}
+            value={password}
           />
           </SafeAreaView>
       
-          <Pressable style={styles.button_come_back} onPress={() => navigation.navigate('HomeScreen')}>
+          <Pressable style={styles.button_come_back} onPress={()=> {
+            handleSignIn(navigation)
+          }}>
             <Text style={styles.text_button}>Ingresar</Text>
           </Pressable>
-          <Pressable style={styles.button_icon_google} onPress={() => googleAuth()}>
+          <Pressable style={styles.button_come_back} onPress={()=> {
+            handleCreateAccount()
+          }}>
+            <Text style={styles.text_button}>Crear cuenta</Text>
+          </Pressable>
+          {/* <Pressable style={styles.button_icon_google} onPress={() => googleAuth()}>
             <Icon
               style={styles.icon_google}
               name='google'
             />
-          </Pressable>
+          </Pressable> */}
         
       </View>
     </HideKeyboard>
@@ -125,7 +98,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    width:200,
+    width:220,
     margin: 12,
     borderWidth: 1,
     padding: 10,
@@ -140,7 +113,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     elevation: 3,
     backgroundColor: '#35495E',
-    width: 150
+    width: 180,
+    marginBottom: 5
   },
   button_icon_google: {
     alignItems: 'center',

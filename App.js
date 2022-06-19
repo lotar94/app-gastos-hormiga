@@ -7,7 +7,6 @@ import { HomeScreen } from './components/HomeScreen'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import ListDiarySpend from './components/ListDiarySpend';
 import { Login } from './components/Login';
-import { AuthProvider } from './context/authContext';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,19 +21,17 @@ export default function App({ navigation }) {
     return <AppLoading />;
   }
   return (
-    <AuthProvider>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
 
-          <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Login" component={Login} />
 
-          <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
 
-          <Stack.Screen name="ListDiarySpendScreen" component={ListDiarySpend} />
+        <Stack.Screen name="ListDiarySpendScreen" component={ListDiarySpend} />
 
-        </Stack.Navigator>
-      </NavigationContainer>
-    </AuthProvider>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
