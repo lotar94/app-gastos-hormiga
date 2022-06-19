@@ -1,6 +1,6 @@
 # App gastos hormigas
 
-## Aplicacion movil creada con React Native ⚛️ para llevar registros de los gastos del día a día 
+Aplicacion movil creada con React Native ⚛️ para llevar registro de los gastos del día a día 
 <img src="./assets/img-readme/image_app.png" alt="drawing" width="650" height="400"/>
 
 ## Requisitos 📝
