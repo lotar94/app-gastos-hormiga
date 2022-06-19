@@ -1,41 +1,41 @@
 import React, { Component, useEffect } from 'react'
 import { View , Text, StyleSheet, TouchableOpacity } from 'react-native'
-import firebase from '../database/firebase'
+import firebase, {getCurrentUserId} from '../database/firebase'
 
 export default class DiarySpend extends Component {
   constructor(props) {
-    super(props)
-    this._isMounted = false
+    super(props);
+    this._isMounted = false;
   }
   state = {
     totalAmount: '0'
   }
 
   componentDidMount() {
-    this._isMounted = true
-    this._isMounted && this.getSpending()
+    this._isMounted = true;
+    this._isMounted && this.getSpending();
   }
 
   componentWillUnmount() {
-    this._isMounted = false
+    this._isMounted = false;
   }
 
   async getSpending() {
-    const today = new Date().toLocaleDateString()
-    let values = []; 
-    await firebase.db.collection('spending').where("date", "==", today).onSnapshot(querySnapshot => {
+    const today = new Date().toLocaleDateString();
+    let values = [];
+    await firebase.db.collection('spending').where("date", "==", today).where("userId", "==", getCurrentUserId()).onSnapshot(querySnapshot => {
       values = []; 
       querySnapshot.docs.forEach( doc => {    
-        const {amount} = doc.data()
-        values.push(parseInt(amount))
+        const {amount} = doc.data();
+        values.push(parseInt(amount));
       })
-      this._isMounted && this.setState({totalAmount:values.map(item => item).reduce((prev, curr) => prev + curr, 0).toString()})
+      this._isMounted && this.setState({totalAmount:values.map(item => item).reduce((prev, curr) => prev + curr, 0).toString()});
     })
   }
 
 
   render() {
-    const { navigation } = this.props
+    const { navigation } = this.props;
 
     return (
       <View style={styles.container}>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Keyboard, StyleSheet, View, Text, Pressable, TextInput, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { app } from "../database/firebase";
+import { app, setCurrentUserId } from "../database/firebase";
 
 
 const HideKeyboard = ({ children }) => (
@@ -33,7 +33,7 @@ export function Login({ navigation }) {
     
     signInWithEmailAndPassword(auth, email, password)
     .then((res)=> {
-      console.log("Signed in!", res);
+      setCurrentUserId(res.user.uid)
       navigation.navigate('HomeScreen')
     })
     .catch((err) => {

@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
-import { ScrollView, Text, View, StyleSheet, TouchableOpacity } from 'react-native'
-import firebase from '../database/firebase'
+import React, { Component } from 'react';
+import { ScrollView, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import firebase, { getCurrentUserId } from '../database/firebase';
 
 export default class WeeklyExpenses extends Component {
 	constructor(props) {
-    super(props)
-    this._isMounted = false
+    super(props);
+    this._isMounted = false;
   }
 
 	state = {
@@ -160,7 +160,7 @@ export default class WeeklyExpenses extends Component {
 
 	async getAmountSpendedMonday() {
     let values = []; 
-    await firebase.db.collection('spending').where("date", "==", this.state.Monday).onSnapshot(querySnapshot => {
+    await firebase.db.collection('spending').where("date", "==", this.state.Monday).where("userId", "==", getCurrentUserId()).onSnapshot(querySnapshot => {
       values = []; 
       querySnapshot.docs.forEach( doc => {
         const {amount} = doc.data()
@@ -172,7 +172,7 @@ export default class WeeklyExpenses extends Component {
 
 	async getAmountSpendedTuesday() {
     let values = []; 
-    await firebase.db.collection('spending').where("date", "==", this.state.Tuesday).onSnapshot(querySnapshot => {
+    await firebase.db.collection('spending').where("date", "==", this.state.Tuesday).where("userId", "==", getCurrentUserId()).onSnapshot(querySnapshot => {
       values = []; 
       querySnapshot.docs.forEach( doc => {
         const {amount} = doc.data()
@@ -184,7 +184,7 @@ export default class WeeklyExpenses extends Component {
 
 	async getAmountSpendedWednesday() {
     let values = []; 
-    await firebase.db.collection('spending').where("date", "==", this.state.Wednesday).onSnapshot(querySnapshot => {
+    await firebase.db.collection('spending').where("date", "==", this.state.Wednesday).where("userId", "==", getCurrentUserId()).onSnapshot(querySnapshot => {
       values = []; 
       querySnapshot.docs.forEach( doc => {
         const {amount} = doc.data()
@@ -196,7 +196,7 @@ export default class WeeklyExpenses extends Component {
 
 	async getAmountSpendedThursday() {
     let values = []; 
-    await firebase.db.collection('spending').where("date", "==", this.state.Thursday).onSnapshot(querySnapshot => {
+    await firebase.db.collection('spending').where("date", "==", this.state.Thursday).where("userId", "==", getCurrentUserId()).onSnapshot(querySnapshot => {
       values = []; 
       querySnapshot.docs.forEach( doc => {
         const {amount} = doc.data()
@@ -208,7 +208,7 @@ export default class WeeklyExpenses extends Component {
 
 	async getAmountSpendedFriday() {
     let values = []; 
-    await firebase.db.collection('spending').where("date", "==", this.state.Friday).onSnapshot(querySnapshot => {
+    await firebase.db.collection('spending').where("date", "==", this.state.Friday).where("userId", "==", getCurrentUserId()).onSnapshot(querySnapshot => {
       values = []; 
       querySnapshot.docs.forEach( doc => {
         const {amount} = doc.data()
@@ -220,7 +220,7 @@ export default class WeeklyExpenses extends Component {
 
 	async getAmountSpendedSaturday() {
     let values = []; 
-    await firebase.db.collection('spending').where("date", "==", this.state.Saturday).onSnapshot(querySnapshot => {
+    await firebase.db.collection('spending').where("date", "==", this.state.Saturday).where("userId", "==", getCurrentUserId()).onSnapshot(querySnapshot => {
       values = []; 
       querySnapshot.docs.forEach( doc => {
         const {amount} = doc.data()
@@ -232,7 +232,7 @@ export default class WeeklyExpenses extends Component {
 
 	async getAmountSpendedSunday() {
     let values = []; 
-    await firebase.db.collection('spending').where("date", "==", this.state.Sunday).onSnapshot(querySnapshot => {
+    await firebase.db.collection('spending').where("date", "==", this.state.Sunday).where("userId", "==", getCurrentUserId()).onSnapshot(querySnapshot => {
       values = []; 
       querySnapshot.docs.forEach( doc => {
         const {amount} = doc.data()

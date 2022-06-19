@@ -10,6 +10,16 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import {apiKey,authDomain, projectId,storageBucket,messagingSenderId,appId} from '@env'
 
+let CURRENT_USER_ID = null
+
+export const setCurrentUserId = (userId) => {
+  console.log("userId => ", userId);
+  CURRENT_USER_ID = userId;
+}
+
+export const getCurrentUserId = () => {
+  return CURRENT_USER_ID
+}
 const firebaseConfig = {
   apiKey: apiKey,
   authDomain: authDomain,
@@ -24,8 +34,10 @@ const app = firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
 
+
+
 export default {
   firebase,
   db,
-  app
+  app 
 }

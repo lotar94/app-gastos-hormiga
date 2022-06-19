@@ -1,7 +1,7 @@
 import React, { Component, useState, useEffect, useRef } from 'react'
 import { StyleSheet, Text, TextInput, View, SafeAreaView, SectionList, StatusBar, Pressable, Keyboard, Modal, TouchableWithoutFeedback } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import firebase from "../database/firebase";
+import firebase, { getCurrentUserId } from "../database/firebase";
 
 const HideKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -41,7 +41,7 @@ export default class ListDiarySpend extends Component {
   async getSpending(date) {
     let values = []; 
     let amountValues = [];
-    await firebase.db.collection("spending").where("date", "==", date)
+    await firebase.db.collection("spending").where("date", "==", date).where("userId", "==", getCurrentUserId())
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {

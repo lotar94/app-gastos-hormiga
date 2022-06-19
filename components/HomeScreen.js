@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { LinearGradient } from 'expo-linear-gradient';
 import DiarySpend from './DiarySpend';
 import WeeklyExpenses from './WeeklyExpenses';
-import firebase from '../database/firebase';
+import firebase, {getCurrentUserId} from '../database/firebase';
 
 const HideKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -19,6 +19,7 @@ export function HomeScreen({ navigation }) {
 
   const [text, onChangeText] = useState(null);
   const [number, onChangeNumber] = useState(null);
+  const userId = getCurrentUserId()
   
   return (
     
@@ -67,11 +68,13 @@ export function HomeScreen({ navigation }) {
                       const data = {
                         date: new Date().toLocaleDateString(),
                         amount: number,
-                        description: text
+                        description: text,
+                        userId: userId
                       }
                       onChangeText(null)
                       onChangeNumber(null)
                       setModalVisible(!modalVisible)
+                      console.log('PPppppppppp',firebase);
                       await firebase.db.collection('spending').add(data).then((res) => {
                         
                       })
