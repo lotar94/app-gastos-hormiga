@@ -5,7 +5,7 @@ import { GoogleAuthProvider } from "firebase/auth";
 // import { getAuth } from "firebase/auth";
 // import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
-
+import * as Google from 'expo-google-app-auth'
 
 
 
