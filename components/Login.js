@@ -60,7 +60,7 @@ export function Login({ navigation }) {
             style={styles.input}
             onChangeText={onChangePassword}
             placeholder="Contraseña"
-            keyboardType="password"
+            keyboardType="visible-password"
             secureTextEntry={true}
             value={password}
           />
