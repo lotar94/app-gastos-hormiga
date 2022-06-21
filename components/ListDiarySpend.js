@@ -24,6 +24,7 @@ export default class ListDiarySpend extends Component {
     totalAmount: '0',
     modalVisible:false,
     text:null,
+    currentDateSelected: null,
     number:null,
     id: null
   }
@@ -47,7 +48,7 @@ export default class ListDiarySpend extends Component {
       querySnapshot.forEach((doc) => {
         const { amount, description } = doc.data();
         amountValues.push(parseInt(amount))
-        values.push({info:`$${amount}   ${description}`, jsonObject: {id: doc.id, amount,description}});
+        values.push({info:`$${amount}   ${description}`, jsonObject: {id: doc.id, amount,description, date: date}});
       });
       this._isMounted && this.setState({totalAmount:amountValues.map(item => item).reduce((prev, curr) => prev + curr, 0).toString()})
       this._isMounted && this.setState({DATA:[{title: "Detalle", data: values}]})
@@ -61,12 +62,15 @@ export default class ListDiarySpend extends Component {
     await firebase.db.collection("spending").doc(id).delete();
   }
 
-  deleteSpend(id) {
-    this.deleteSpending(id)
+  deleteSpend(jsonObject) {
+    this.deleteSpending(jsonObject.id)
+    .then(res => {
+      this.getSpending(jsonObject.date)
+    })
   }
 
   editSpend(object) {
-    this.setState({modalVisible: true, number: object.amount, text: object.description, id: object.id})
+    this.setState({modalVisible: true, number: object.amount, text: object.description, id: object.id, currentDateSelected: object.date})
   }
 
   render() {
@@ -82,7 +86,7 @@ export default class ListDiarySpend extends Component {
         <Icon
           style={styles.icon_add_expense}
           name='trash'
-          onPress={()=> this.deleteSpend(title.jsonObject.id)}
+          onPress={()=> this.deleteSpend(title.jsonObject)}
         />
       </View>
     );
@@ -96,7 +100,7 @@ export default class ListDiarySpend extends Component {
       dayToShow = route.params.day
     }
 
-
+    const userId = getCurrentUserId();
     
     return (
       <View style={styles.container1}>
@@ -144,12 +148,15 @@ export default class ListDiarySpend extends Component {
                     } else {
                       const data = {
                         amount: this.state.number,
-                        description: this.state.text
+                        description: this.state.text,
+                        userId: userId,
+                        date: this.state.currentDateSelected
                       }
                       this.setState({number: null})
                       this.setState({text: null})
                       this.setState({modalVisible: !this.state.modalVisible})
                       await firebase.db.collection('spending').doc(this.state.id).set(data)
+                      .then(res => {this.getSpending(this.state.currentDateSelected)})
                       
                     }
                   }}

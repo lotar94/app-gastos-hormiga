@@ -74,7 +74,6 @@ export function HomeScreen({ navigation }) {
                       onChangeText(null)
                       onChangeNumber(null)
                       setModalVisible(!modalVisible)
-                      console.log('PPppppppppp',firebase);
                       await firebase.db.collection('spending').add(data).then((res) => {
                         
                       })

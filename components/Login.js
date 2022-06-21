@@ -21,10 +21,10 @@ export function Login({ navigation }) {
   const handleCreateAccount = () => {
     createUserWithEmailAndPassword(auth, email, password)
     .then((res)=>{
-      console.log('Res createAccount => ',res);
+      console.info('Res createAccount => ',res);
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
       alert(err)
     })
   }
@@ -37,7 +37,7 @@ export function Login({ navigation }) {
       navigation.navigate('HomeScreen')
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
       alert(err)
     })
   }

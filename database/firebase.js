@@ -13,7 +13,6 @@ import {apiKey,authDomain, projectId,storageBucket,messagingSenderId,appId} from
 let CURRENT_USER_ID = null
 
 export const setCurrentUserId = (userId) => {
-  console.log("userId => ", userId);
   CURRENT_USER_ID = userId;
 }
 
