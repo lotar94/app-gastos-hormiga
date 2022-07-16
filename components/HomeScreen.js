@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Keyboard, StyleSheet, View, Modal, Text, Pressable, Alert, TextInput, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { LinearGradient } from 'expo-linear-gradient';
 import DiarySpend from './DiarySpend';
 import WeeklyExpenses from './WeeklyExpenses';
 import firebase, {getCurrentUserId} from '../database/firebase';
@@ -100,12 +99,7 @@ export function HomeScreen({ navigation }) {
           </View>
           </HideKeyboard>
       </Modal>
-
-      <LinearGradient
-      colors={['#99D5C2', '#357676', 'transparent']}
-      style={styles.gradient}
-      >
-         
+      <View style={styles.gradient}>
         <DiarySpend navigation={navigation} ></DiarySpend>
 
         <WeeklyExpenses style={styles.weekly_expenses}  navigation={navigation}></WeeklyExpenses>
@@ -118,19 +112,17 @@ export function HomeScreen({ navigation }) {
           />
         </View>
         
-       
-      </LinearGradient>
+      </View>
       
     </View>
     
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#357676',
+    backgroundColor: '#5BB78D',
     alignItems: 'center',
     justifyContent: 'center',
   },
